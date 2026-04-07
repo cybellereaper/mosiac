@@ -1,0 +1,17 @@
+package imageboard.providers;
+
+import imageboard.model.Post;
+import imageboard.model.ProviderCapabilities;
+import imageboard.model.SearchResult;
+import imageboard.model.Tag;
+import imageboard.query.SearchQuery;
+
+import java.util.Optional;
+
+public interface ProviderAdapter {
+    String providerId();
+    ProviderCapabilities capabilities();
+    SearchResult<Post> searchPosts(SearchQuery query);
+    Optional<Post> getPostById(long postId);
+    SearchResult<Tag> searchTags(String name, int page, int limit);
+}
