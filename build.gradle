@@ -1,15 +1,23 @@
 plugins {
-    id 'java'
+    id 'java-library'
 }
 
 group = 'com.github.cybellereaper'
 version = '1.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    api 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+
     testImplementation platform('org.junit:junit-bom:6.0.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -17,4 +25,14 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+
+// Compatibility aliases for environments that invoke test.main style tasks
+tasks.register("test.main") {
+    dependsOn(tasks.test)
+}
+
+tasks.register("test.main()") {
+    dependsOn(tasks.test)
 }
