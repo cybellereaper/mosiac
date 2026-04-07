@@ -2,6 +2,7 @@ package imageboard;
 
 import imageboard.errors.AuthenticationException;
 import imageboard.errors.RateLimitException;
+import imageboard.errors.RemoteApiException;
 import imageboard.http.*;
 import imageboard.internal.HttpExecutor;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,16 @@ class HttpExecutorTest {
         HttpExecutor executor = new HttpExecutor(transport, RetryPolicy.defaultPolicy(), () -> {});
 
         assertThrows(AuthenticationException.class, () ->
+                executor.execute("danbooru", new HttpRequestData(HttpMethod.GET, URI.create("https://x.test"), Map.of(), Duration.ofSeconds(1))));
+    }
+
+
+    @Test
+    void maps403ToRemoteApiExceptionNotAuthenticationException() {
+        FakeTransport transport = new FakeTransport(new HttpResponseData(403, "", Map.of()));
+        HttpExecutor executor = new HttpExecutor(transport, RetryPolicy.defaultPolicy(), () -> {});
+
+        assertThrows(RemoteApiException.class, () ->
                 executor.execute("danbooru", new HttpRequestData(HttpMethod.GET, URI.create("https://x.test"), Map.of(), Duration.ofSeconds(1))));
     }
 

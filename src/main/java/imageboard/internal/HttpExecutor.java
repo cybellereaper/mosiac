@@ -29,7 +29,7 @@ public final class HttpExecutor {
             rateLimiter.acquire();
             HttpResponseData response = transport.execute(request);
             int code = response.statusCode();
-            if (code == 401 || code == 403) {
+            if (code == 401) {
                 throw new AuthenticationException(provider, "Authentication rejected");
             }
             if (code == 429) {
