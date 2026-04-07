@@ -26,3 +26,13 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+
+// Compatibility aliases for environments that invoke test.main style tasks
+tasks.register("test.main") {
+    dependsOn(tasks.test)
+}
+
+tasks.register("test.main()") {
+    dependsOn(tasks.test)
+}
